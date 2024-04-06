@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 // GET endpoint
 app.get('/', (req, res) => {
-  res.send('Hello, this is a GET request!');
+  res.send('Hello, this is a GET request! v2');
 });
 
 app.get('/healthcheck', (req, res) => {
