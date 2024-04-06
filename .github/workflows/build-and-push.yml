@@ -37,7 +37,6 @@ jobs:
           REGISTRY_ALIAS: k2g9s6k1
           REPOSITORY: iic2173-api
           IMAGE_TAG: latest
-        run:
-          cd api
-          docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
+        run: |
+          docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG ./api
           docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
