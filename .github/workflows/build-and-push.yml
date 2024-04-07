@@ -72,8 +72,8 @@ jobs:
             --application-name $DEPLOYMENT_APPLICATION_NAME \
             --deployment-group-name $DEPLOYMENT_GROUP_NAME \
             --s3-location bucket=$DEPLOYMENT_BUCKET_NAME,key=$S3_KEY,bundleType=zip \
-            --file-exists-behavior OVERWRITE | | jq -r '.deploymentId')
-            echo "deploymentId=$deploymentId" >> $GITHUB_OUTPUT
+            --description "Automatic deployment from github commit ${{github.sha}}" | jq -r '.deploymentId')
+          echo "deploymentId=$deploymentId" >> $GITHUB_OUTPUT
       
       - name: Wait until deployment is done
         run: aws deploy wait deployment-successful --deployment-id ${{ steps.codedeploy-trigger-deploy.outputs.deploymentId }}
