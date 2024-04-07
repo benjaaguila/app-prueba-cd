@@ -40,3 +40,31 @@ jobs:
         run: |
           docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG ./api
           docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+  
+  deploy-to-ec2:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::996731592500:role/github-action-app-prueba-cd-repo-workflow
+          aws-region: us-east-1
+      
+      - name: Zip Artifacts And updload to S3
+        run: zip -r deploy.zip scripts/ appspec.yml docker-compose.production.yml |
+             aws s3 cp deploy.zip s3://app-prueba-cd-deploy/deploy.zip
+      
+      - name: Create Codedeploy Deployment
+        run: aws deploy create-deployment \
+         --application-name app-prueba-cd-codedeploy \
+         --deployment-group-name app-prueba-cd-deployment-group \
+         --s3-location bucket=app-prueba-cd-deploy,key=deploy.zip,bundleType=zip \
+         --file-exists-behavior OVERWRITE
+          
+        
+
