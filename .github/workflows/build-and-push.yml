@@ -60,11 +60,7 @@ jobs:
              aws s3 cp deploy.zip s3://app-prueba-cd-deploy/deploy.zip
       
       - name: Create Codedeploy Deployment
-        run: aws deploy create-deployment \
-         --application-name app-prueba-cd-codedeploy \
-         --deployment-group-name app-prueba-cd-deployment-group \
-         --s3-location bucket=app-prueba-cd-deploy,key=deploy.zip,bundleType=zip \
-         --file-exists-behavior OVERWRITE
+        run: aws deploy create-deployment --application-name app-prueba-cd-codedeploy --deployment-group-name app-prueba-cd-deployment-group --s3-location bucket=app-prueba-cd-deploy,key=deploy.zip,bundleType=zip --file-exists-behavior OVERWRITE
           
         
 
