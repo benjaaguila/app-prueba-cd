@@ -68,7 +68,7 @@ jobs:
           S3_KEY: deploy.zip
           GITHUB_OUTPUT: $GITHUB_ENV
         run: |
-          deploymentId=$ (aws deploy create-deployment \
+          deploymentId=$( aws deploy create-deployment \
             --application-name $DEPLOYMENT_APPLICATION_NAME \
             --deployment-group-name $DEPLOYMENT_GROUP_NAME \
             --s3-location bucket=$DEPLOYMENT_BUCKET_NAME,key=$S3_KEY,bundleType=zip \
