@@ -11,3 +11,7 @@ Docs:
 5. https://docs.aws.amazon.com/codedeploy/latest/userguide/welcome.html
 6. https://docs.aws.amazon.com/codedeploy/latest/userguide/tutorials-on-premises-instance.html
 7. https://docs.aws.amazon.com/codedeploy/latest/userguide/security-iam.html
+
+### Github actions optimizations
+
+8. https://github.com/dorny/paths-filter
