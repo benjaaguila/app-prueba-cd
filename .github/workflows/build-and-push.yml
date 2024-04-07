@@ -60,7 +60,23 @@ jobs:
              aws s3 cp deploy.zip s3://app-prueba-cd-deploy/deploy.zip
       
       - name: Create Codedeploy Deployment
-        run: aws deploy create-deployment --application-name app-prueba-cd-codedeploy --deployment-group-name app-prueba-cd-deployment-group --s3-location bucket=app-prueba-cd-deploy,key=deploy.zip,bundleType=zip --file-exists-behavior OVERWRITE
+        id: codedeploy-trigger-deploy
+        env:
+          DEPLOYMENT_APPLICATION_NAME: app-prueba-cd-codedeploy
+          DEPLOYMENT_GROUP_NAME: app-prueba-cd-deployment-group
+          DEPLOYMENT_BUCKET_NAME: app-prueba-cd-deploy
+          S3_KEY: deploy.zip
+          GITHUB_OUTPUT: $GITHUB_ENV
+        run: |
+          deploymentId=$ (aws deploy create-deployment \
+            --application-name $DEPLOYMENT_APPLICATION_NAME \
+            --deployment-group-name $DEPLOYMENT_GROUP_NAME \
+            --s3-location bucket=$DEPLOYMENT_BUCKET_NAME,key=$S3_KEY,bundleType=zip \
+            --file-exists-behavior OVERWRITE | | jq -r '.deploymentId')
+            echo "deploymentId=$deploymentId" >> $GITHUB_OUTPUT
+      
+      - name: Wait until deployment is done
+        run: aws deploy wait deployment-successful --deployment-id ${{ steps.codedeploy-trigger-deploy.outputs.deploymentId }}
           
         
 
