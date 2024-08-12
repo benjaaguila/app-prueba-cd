@@ -1,4 +1,4 @@
-Docs:
+Docs for project:
 
 ### ECR + Automatización github actions
 1. https://github.com/actions/checkout
